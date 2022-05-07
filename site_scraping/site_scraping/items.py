@@ -8,5 +8,9 @@ import scrapy
 
 class SiteScrapingItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    date = scrapy.Field()
+    notice_number = scrapy.Field()
+    tender_name = scrapy.Field()
+    procedure_state = scrapy.Field()
+    type_of_procurement = scrapy.Field()
+    estimated_value = scrapy.Field()

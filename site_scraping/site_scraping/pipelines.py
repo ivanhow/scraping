@@ -10,4 +10,5 @@ from itemadapter import ItemAdapter
 
 class SiteScrapingPipeline:
     def process_item(self, item, spider):
+        print('Pipeline: ' + item['tender_name'])
         return item
