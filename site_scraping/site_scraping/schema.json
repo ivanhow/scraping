@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10
+    },
+    "estimated_value": {
+      "type": "number"
+    },
+    "notice_number": {
+      "type": "string",
+      "minLength": 1
+    },
+    "procedure_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tender_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "type_of_procurement": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

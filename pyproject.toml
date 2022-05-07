@@ -7,6 +7,7 @@ authors = ["ivanhow <71693631+ivanhow@users.noreply.github.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 Scrapy = "^2.6.1"
+jsonschema = "^4.5.1"
 
 [tool.poetry.dev-dependencies]
 
