@@ -12,5 +12,6 @@ class SiteScrapingItem(scrapy.Item):
     notice_number = scrapy.Field()
     tender_name = scrapy.Field()
     procedure_state = scrapy.Field()
+    contract_type = scrapy.Field()
     type_of_procurement = scrapy.Field()
     estimated_value = scrapy.Field()

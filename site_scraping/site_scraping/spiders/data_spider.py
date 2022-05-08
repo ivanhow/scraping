@@ -4,8 +4,7 @@ from ..items import SiteScrapingItem
 from datetime import datetime, timedelta
 
 
-# For testing
-now = datetime.now() - timedelta(days=17)  # TODO - to delete timedelta
+now = datetime.now()
 today = now.strftime("%Y-%m-%dT21:00:00.000Z")
 yesterday = now - timedelta(days=1)
 
@@ -26,16 +25,7 @@ class MySpider(scrapy.Spider):
                    'HttpSessionID': 'null',
                    'Origin': 'http://www.e-licitatie.ro',
                    'Referer': 'http://www.e-licitatie.ro/pub/notices/contract-notices/list/2/1', }
-        # params = {
-        # "sysNoticeTypeIds":['2'],
-        # "sortProperties":[],
-        # "pageSize":'100',
-        # "hasUnansweredQuestions":'false',
-        # "startPublicationDate":"2022-04-19T14:07:24.196Z",
-        # "sysProcedureStateId":'2',
-        # "pageIndex":'0',
-        # "endPublicationDate":"2022-04-18T21:00:00.000Z",
-        # }
+
         params = {
             "sysNoticeTypeIds": ['2'],
             "sortProperties": [],
@@ -45,13 +35,11 @@ class MySpider(scrapy.Spider):
             "sysProcedureStateId": '2',
             "pageIndex": '0',
             "endPublicationDate": f'{yesterday.strftime("%Y-%m-%dT21:00:00.000Z")}',
-            # "endPublicationDate": f'{yesterday.strftime("%Y-%m-%dT21:00:00.000Z")}',
         }
         yield scrapy.FormRequest(url='http://www.e-licitatie.ro/api-pub/NoticeCommon/GetCNoticeList/', callback=self.parse,
                                  method='POST', body=json.dumps(params), headers=header)
 
     def parse(self, response, **kwargs):
-        # print(response.text)
         items = SiteScrapingItem()
         scraped_data = json.loads(response.body)
         for i in range(len(scraped_data['items'])):
@@ -59,29 +47,18 @@ class MySpider(scrapy.Spider):
             notice_number = scraped_data['items'][i]['noticeNo']
             tender_name = scraped_data['items'][i]['contractTitle']
             procedure_state = scraped_data['items'][i]['sysProcedureState']["text"]
+            contract_type = scraped_data['items'][i]['sysAcquisitionContractType']["text"]
             if scraped_data['items'][i]['isOnline']:
                 type_of_procurement = 'ONLINE'
             else:
                 type_of_procurement = 'OFFLINE'
-            estimated_value = scraped_data['items'][i]['estimatedValueRon']
+            estimated_value = str(scraped_data['items'][i]['estimatedValueRon'])
 
             items['date'] = date
             items['notice_number'] = notice_number
             items['tender_name'] = tender_name
             items['procedure_state'] = procedure_state
+            items['contract_type'] = contract_type
             items['type_of_procurement'] = type_of_procurement
             items['estimated_value'] = estimated_value
             yield items
-
-
-
-
-
-    # def parse(self, response, **kwargs):
-        # print(response.text)
-        # scraped_data = json.loads(response.body)
-        # print(scraped_data.get('items')[0])
-        # with open('json_data.json', 'w') as outfile:
-        #     json.dump(scraped_data, outfile)
-
-
